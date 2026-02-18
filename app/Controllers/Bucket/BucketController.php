@@ -4,6 +4,7 @@ namespace App\Controllers\Bucket;
 
 use App\Controllers\BaseController;
 use App\ThirdParty\Nos;
+use App\Utils\OptionUtils;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class BucketController extends BaseController
@@ -23,9 +24,30 @@ class BucketController extends BaseController
         }
 
         $data = [
-            'data' => $list_bucket
+            'data'      => $list_bucket,
+            'list_acl'  => OptionUtils::get_list_acl()
         ];
         return view('pages/bucket/bucket_list', $data);
+    }
+
+    public function add_bucket(): \CodeIgniter\HTTP\RedirectResponse
+    {
+        try{
+            $s3 = Nos::connect();
+
+            $nama_bucket    = $this->request->getPost('nama-bucket');
+            $acl            = $this->request->getPost('acl');
+
+            $s3->createBucket([
+                'Bucket'    => $nama_bucket,
+                'ACL'       => $acl
+            ]);
+            return redirect()->back()
+                ->with('success', "Bucket {$nama_bucket} berhasil dibuat");
+        }catch(\Exception $e){
+            return redirect()->back()
+                ->with('error', "Gagal Tambah Bucket : {$e->getMessage()}");
+        }
     }
 
     public function hapus_bucket(string $nama_bucket): \CodeIgniter\HTTP\RedirectResponse

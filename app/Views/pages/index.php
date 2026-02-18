@@ -1,5 +1,22 @@
 <?= $this->extend('layouts/layout_dashboard') ?>
 
+<?= $this->section('content-css') ?>
+<!-- apexcharts -->
+<link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
+        integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0="
+        crossorigin="anonymous"
+/>
+<!-- jsvectormap -->
+<link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
+        integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
+        crossorigin="anonymous"
+/>
+<?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
 <!--begin::App Main-->
 <main class="app-main">
