@@ -5,6 +5,7 @@ namespace App\Controllers\Bucket;
 use App\Controllers\BaseController;
 use App\ThirdParty\Nos;
 use App\Utils\OptionUtils;
+use Carbon\Carbon;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class BucketController extends BaseController
@@ -63,6 +64,42 @@ class BucketController extends BaseController
         }catch(\Exception $e){
             return redirect()->back()
                 ->with('error', "Gagal Hapus Bucket : {$e->getMessage()}");
+        }
+    }
+
+    public function open_bucket(string $nama_bucket): string|\CodeIgniter\HTTP\RedirectResponse
+    {
+        helper(['number', 'form']);
+
+        try{
+            $s3 = Nos::connect();
+
+            $object_data = $s3->listObjectsV2([
+                'Bucket' => $nama_bucket
+            ]);
+
+            $list_object = [];
+            if(isset($object_data['Contents'])){
+                foreach($object_data['Contents'] as $content){
+                    $list_object[] = [
+                        'filename'          => $content['Key'],
+                        'last_date'         => Carbon::parse($content['LastModified'])->toDateTimeString(),
+                        'size'              => number_to_size($content['Size']),
+                        'edit_action'       => "object/edit/{$nama_bucket}/{$content['Key']}",
+                        'hapus_action'      => "object/hapus/{$nama_bucket}/{$content['Key']}",
+                        'download_action'   => "object/download/{$nama_bucket}/{$content['Key']}"
+                    ];
+                }
+            }
+
+            $data = [
+                'data'          => $list_object,
+                'add_action'    => "object/add/{$nama_bucket}",
+            ];
+            return view('pages/object/object_list', $data);
+        }catch(\Exception $e){
+            return redirect()->back()
+                ->with('error', "Gagal Buka Bucket : {$e->getMessage()}");
         }
     }
 }
