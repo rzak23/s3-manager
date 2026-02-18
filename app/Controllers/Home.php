@@ -15,6 +15,7 @@ class Home extends BaseController
 
         $total_bucket = count($data_bucket);
         $data = [
+            'menu'         => 'home',
             'total_bucket' => $total_bucket
         ];
         return view('pages/index', $data);

@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $menu
+ */
+?>
 <!--begin::Sidebar-->
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <!--begin::Sidebar Brand-->
@@ -24,7 +29,7 @@
                 id="navigation"
             >
                 <li class="nav-item">
-                    <a href="<?= site_url() ?>" class="nav-link active">
+                    <a href="<?= site_url() ?>" class="nav-link <?= ($menu == 'home') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-house"></i>
                         <p>
                             Dashboard
@@ -32,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= site_url('bucket') ?>" class="nav-link">
+                    <a href="<?= site_url('bucket') ?>" class="nav-link <?= ($menu == 'bucket') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-bucket"></i>
                         <p>Bucket</p>
                     </a>
