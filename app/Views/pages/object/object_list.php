@@ -2,6 +2,7 @@
 /**
  * @var array $data
  * @var string $add_action
+ * @var array $list_acl
  */
 ?>
 <?= $this->extend('layouts/layout_dashboard') ?>
@@ -78,9 +79,26 @@
                     </div>
                     <div class="modal-body">
                         <?= form_open_multipart($add_action) ?>
-                        <div class="mb-3">
-                            <label class="form-label" for="file-up">Upload File</label>
-                            <input type="file" class="form-control" name="file-up" id="file-up">
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <div class="mb-3">
+                                    <label class="form-label" for="file-up">Upload File</label>
+                                    <input type="file" class="form-control" name="file-up" id="file-up">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <div class="mb-3">
+                                    <label class="form-label" for="acl-file">ACL</label>
+                                    <select name="acl-file" class="form-control" id="acl-file">
+                                        <option>-- Pilih ACL --</option>
+                                        <?php foreach($list_acl as $row => $key): ?>
+                                        <option value="<?= $row ?>">
+                                            <?= $key ?>
+                                        </option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-sm btn-success">

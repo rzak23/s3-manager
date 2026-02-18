@@ -25,6 +25,7 @@ class BucketController extends BaseController
         }
 
         $data = [
+            'menu'      => 'bucket',
             'data'      => $list_bucket,
             'list_acl'  => OptionUtils::get_list_acl()
         ];
@@ -93,8 +94,10 @@ class BucketController extends BaseController
             }
 
             $data = [
+                'menu'          => 'bucket',
                 'data'          => $list_object,
                 'add_action'    => "object/add/{$nama_bucket}",
+                'list_acl'      => OptionUtils::get_list_acl()
             ];
             return view('pages/object/object_list', $data);
         }catch(\Exception $e){

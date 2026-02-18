@@ -3,7 +3,7 @@
 
 use App\Controllers\Bucket\BucketController;
 use App\Controllers\Home;
-use App\Controllers\ObjectController;
+use App\Controllers\Object\ObjectController;
 use CodeIgniter\Router\RouteCollection;
 
 /**

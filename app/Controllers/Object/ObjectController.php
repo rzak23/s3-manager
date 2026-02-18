@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Object;
 
 use App\Controllers\BaseController;
 use App\ThirdParty\Nos;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class ObjectController extends BaseController
 {
@@ -14,12 +13,14 @@ class ObjectController extends BaseController
             $s3 = Nos::connect();
 
             $file_src = $this->request->getFile('file-up');
+            $acl = $this->request->getPost('acl-file');
 
             $file_name = $file_src->getClientName();
             $s3->putObject([
                 'Bucket' => $nama_bucket,
                 'Key' => $file_name,
-                'SourceFile' => $file_src->getTempName()
+                'SourceFile' => $file_src->getTempName(),
+                'ACL' => $acl
             ]);
 
             return redirect()->back()
