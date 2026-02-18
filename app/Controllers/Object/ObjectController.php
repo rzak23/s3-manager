@@ -17,10 +17,10 @@ class ObjectController extends BaseController
 
             $file_name = $file_src->getClientName();
             $s3->putObject([
-                'Bucket' => $nama_bucket,
-                'Key' => $file_name,
-                'SourceFile' => $file_src->getTempName(),
-                'ACL' => $acl
+                'Bucket'        => $nama_bucket,
+                'Key'           => $file_name,
+                'SourceFile'    => $file_src->getTempName(),
+                'ACL'           => $acl
             ]);
 
             return redirect()->back()
