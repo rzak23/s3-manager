@@ -73,4 +73,19 @@ class ObjectController extends BaseController
 
         }
     }
+
+    public function info_file(string $nama_bucket, string $file_name){
+        try{
+            $s3 = Nos::connect();
+
+            $result = $s3->getObjectAcl([
+                'Bucket'    => $nama_bucket,
+                'Key'       => $file_name
+            ]);
+            dd($result);
+        }catch(\Exception $e){
+            return redirect()->back()
+                ->with('error', "Gagal Info : {$e->getMessage()}");
+        }
+    }
 }

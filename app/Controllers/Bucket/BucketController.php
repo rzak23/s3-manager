@@ -86,9 +86,10 @@ class BucketController extends BaseController
                         'filename'          => $content['Key'],
                         'last_date'         => Carbon::parse($content['LastModified'])->toDateTimeString(),
                         'size'              => number_to_size($content['Size']),
-                        'edit_action'       => "object/edit/{$nama_bucket}/{$content['Key']}",
+                        //'edit_action'       => "object/edit/{$nama_bucket}/{$content['Key']}",
                         'hapus_action'      => "object/hapus/{$nama_bucket}/{$content['Key']}",
-                        'download_action'   => "object/download/{$nama_bucket}/{$content['Key']}"
+                        'download_action'   => "object/download/{$nama_bucket}/{$content['Key']}",
+                        'acl_action'        => "object/acl/{$nama_bucket}/{$content['Key']}"
                     ];
                 }
             }

@@ -53,6 +53,9 @@
                                     <td><?= $row['size'] ?></td>
                                     <td><?= $row['last_date'] ?></td>
                                     <td class="text-center">
+                                        <a href="<?= site_url($row['acl_action']) ?>" class="btn btn-sm btn-info">
+                                            <i class="bi bi-shield"></i>
+                                        </a>
                                         <a href="<?= site_url($row['download_action']) ?>" class="btn btn-sm btn-primary">
                                             <i class="bi bi-download"></i>
                                         </a>
