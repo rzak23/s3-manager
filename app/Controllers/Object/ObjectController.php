@@ -74,15 +74,22 @@ class ObjectController extends BaseController
         }
     }
 
-    public function info_file(string $nama_bucket, string $file_name){
+    public function info_file(string $nama_bucket){
         try{
             $s3 = Nos::connect();
 
+            $uri            = service('uri');
+            $segments       = $uri->getSegments();
+            $file_segments  = array_slice($segments, 2);
+            $file_path      = implode('/', $file_segments);
+            $file_path      = str_replace("{$nama_bucket}/", '', $file_path);
+            $file_path      = urldecode($file_path);
+
             $result = $s3->getObjectAcl([
                 'Bucket'    => $nama_bucket,
-                'Key'       => $file_name
+                'Key'       => $file_path
             ]);
-            dd($result);
+            dd($result->get('Grants'));
         }catch(\Exception $e){
             return redirect()->back()
                 ->with('error', "Gagal Info : {$e->getMessage()}");

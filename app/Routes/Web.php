@@ -22,5 +22,5 @@ $routes->group('object', function(RouteCollection $router){
     $router->post('add/(:any)', [ObjectController::class, 'upload_file']);
     $router->get('hapus/(:any)/(:any)', [ObjectController::class, 'hapus_file']);
     $router->get('download/(:any)', [ObjectController::class, 'download_file']);
-    $router->get('acl/(:any)/(:any)', [ObjectController::class, 'info_file']);
+    //$router->get('acl/(:any)', [ObjectController::class, 'info_file']);
 });
