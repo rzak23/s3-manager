@@ -12,13 +12,15 @@ class ObjectController extends BaseController
         try{
             $s3 = Nos::connect();
 
-            $file_src = $this->request->getFile('file-up');
-            $acl = $this->request->getPost('acl-file');
+            $file_src   = $this->request->getFile('file-up');
+            $acl        = $this->request->getPost('acl-file');
+            $folder     = $this->request->getPost('folder');
 
             $file_name = $file_src->getClientName();
+            $file_path = ($folder == "") ? $file_name : "{$folder}/{$file_name}";
             $s3->putObject([
                 'Bucket'        => $nama_bucket,
-                'Key'           => $file_name,
+                'Key'           => $file_path,
                 'SourceFile'    => $file_src->getTempName(),
                 'ACL'           => $acl
             ]);
@@ -31,16 +33,17 @@ class ObjectController extends BaseController
         }
     }
 
-    public function hapus_file(string $nama_bucket, string $file_name): \CodeIgniter\HTTP\RedirectResponse
+    public function hapus_file(string $nama_bucket): \CodeIgniter\HTTP\RedirectResponse
     {
         try{
             $s3 = Nos::connect();
 
-            $parameters = array_merge(['Bucket' => $nama_bucket, 'Key' => $file_name], []);
+            $file_path = $this->get_file_path_from_uri($nama_bucket);
+            $parameters = array_merge(['Bucket' => $nama_bucket, 'Key' => $file_path], []);
             $s3->deleteObject($parameters);
 
             return redirect()->back()
-                ->with('success', "File {$file_name} berhasil dihapus dari Bucket {$nama_bucket}");
+                ->with('success', "File {$file_path} berhasil dihapus dari Bucket {$nama_bucket}");
         }catch(\Exception $e){
             return redirect()->back()
                 ->with('error', "Error Hapus File : {$e->getMessage()}");
@@ -52,13 +55,7 @@ class ObjectController extends BaseController
         try{
             $s3 = Nos::connect();
 
-            $uri            = service('uri');
-            $segments       = $uri->getSegments();
-            $file_segments  = array_slice($segments, 2);
-            $file_path      = implode('/', $file_segments);
-            $file_path      = str_replace("{$nama_bucket}/", '', $file_path);
-            $file_path      = urldecode($file_path);
-
+            $file_path = $this->get_file_path_from_uri($nama_bucket);
             $result = $s3->getObject([
                 'Bucket' => $nama_bucket,
                 'Key' => $file_path
@@ -78,13 +75,7 @@ class ObjectController extends BaseController
         try{
             $s3 = Nos::connect();
 
-            $uri            = service('uri');
-            $segments       = $uri->getSegments();
-            $file_segments  = array_slice($segments, 2);
-            $file_path      = implode('/', $file_segments);
-            $file_path      = str_replace("{$nama_bucket}/", '', $file_path);
-            $file_path      = urldecode($file_path);
-
+            $file_path = $this->get_file_path_from_uri($nama_bucket);
             $result = $s3->getObjectAcl([
                 'Bucket'    => $nama_bucket,
                 'Key'       => $file_path
@@ -94,5 +85,15 @@ class ObjectController extends BaseController
             return redirect()->back()
                 ->with('error', "Gagal Info : {$e->getMessage()}");
         }
+    }
+
+    private function get_file_path_from_uri(string $nama_bucket): string
+    {
+        $uri            = service('uri');
+        $segments       = $uri->getSegments();
+        $file_segments  = array_slice($segments, 2);
+        $file_path      = implode('/', $file_segments);
+        $file_path      = str_replace("{$nama_bucket}/", '', $file_path);
+        return urldecode($file_path);
     }
 }

@@ -82,10 +82,19 @@
                     </div>
                     <div class="modal-body">
                         <?= form_open_multipart($add_action) ?>
+                        <div class="mb-3">
+                            <label class="form-label" for="folder">
+                                <span>Folder/Key</span>
+                                <small class="text-info">Kosongkan jika tidak ingin menambahkan key</small>
+                            </label>
+                            <input type="text" name="folder" class="form-control" id="folder" autocomplete="off">
+                        </div>
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="mb-3">
-                                    <label class="form-label" for="file-up">Upload File</label>
+                                    <label class="form-label" for="file-up">
+                                        <span>Upload File</span>
+                                    </label>
                                     <input type="file" class="form-control" name="file-up" id="file-up">
                                 </div>
                             </div>
