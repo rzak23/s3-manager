@@ -7,7 +7,7 @@ use App\ThirdParty\Nos;
 
 class ObjectController extends BaseController
 {
-    public function upload_file(string $nama_bucket): \CodeIgniter\HTTP\RedirectResponse
+    public function upload_file(string $nama_bucket): \CodeIgniter\HTTP\ResponseInterface
     {
         try{
             $s3 = Nos::connect();
@@ -25,11 +25,15 @@ class ObjectController extends BaseController
                 'ACL'           => $acl
             ]);
 
-            return redirect()->back()
-                ->with('success', "File {$file_name} berhasil diupload");
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => "File {$file_name} berhasil diupload"
+            ])->setStatusCode(200);
         }catch(\Exception $e){
-            return redirect()->back()
-                ->with('error', "Gagal Upload : {$e->getMessage()}");
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => "Gagal upload file : {$e->getMessage()}"
+            ])->setStatusCode(500);
         }
     }
 
